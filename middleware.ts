@@ -4,7 +4,13 @@ import { Request, Response, NextFunction } from 'express';
 @Injectable()
 export class DomainMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    const allowedDomains = ['localhost:9999', 'tranduythai.id.vn', 'api.thaitd.io.vn', 'api.tranduythai.id.vn'];
+    const allowedDomains = [
+      'localhost:9999',
+      'tranduythai.id.vn',
+      'api.thaitd.io.vn',
+      'api.tranduythai.id.vn',
+      'http://103.38.237.87/',
+    ];
     const host = req.headers.host;
 
     if (allowedDomains.includes(host)) {
