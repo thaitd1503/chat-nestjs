@@ -10,6 +10,8 @@ export class DomainMiddleware implements NestMiddleware {
       'api.thaitd.io.vn',
       'api.tranduythai.id.vn',
       'http://103.38.237.87/',
+      '103.38.237.87:9999',
+      '103.38.237.87',
     ];
     const host = req.headers.host;
 
