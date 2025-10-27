@@ -34,7 +34,7 @@ export class GetUserDto {
     if (!value) return value;
     if (/^https?:\/\//i.test(value)) return value;
     const clean = String(value).replace(/^\/+/, '');
-    return `http://localhost:9999/${clean}`;
+    return `${process.env.domain}${clean}`;
   })
   avatar_url: string;
 
