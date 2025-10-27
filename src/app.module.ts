@@ -32,7 +32,7 @@ dotenv.config();
       type: 'mysql',
       host: '103.38.237.87',
       port: 3306,
-      username: 'thaitd',
+      username: 'root',
       password: 'thaitd',
       database: 'chat-db',
       entities: [
