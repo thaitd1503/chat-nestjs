@@ -30,7 +30,7 @@ dotenv.config();
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '103.38.237.87',
+      host: 'localhost',
       port: 3306,
       username: 'root',
       password: 'thaitd',
