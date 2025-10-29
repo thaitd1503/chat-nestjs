@@ -10,6 +10,8 @@ export declare class User {
     password_hash: string;
     avatar_url?: string;
     otp_secret?: string;
+    time_otp?: string;
+    status?: string;
     created_at?: string;
     updated_at?: string;
     role: Role;

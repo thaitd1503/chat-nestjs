@@ -22,8 +22,10 @@ import { MessagesController } from './modal/messages/messages.controller';
 import { MessagesService } from './modal/messages/messages.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { FilesController } from './modal/upload-files/files.controller';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
-
+import { MailService } from './mail/mail.service';
 dotenv.config();
 
 @Module({
@@ -70,6 +72,25 @@ dotenv.config();
       rootPath: join(__dirname, '..', 'public/uploads'),
       serveRoot: '/uploads',
     }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: `thaitd1503.work@gmail.com`,
+          pass: `ditm fzdc jcxp zpts`,
+        },
+      },
+      defaults: {
+        from: '"Duy Thái 🗨" <no-reply@tranduythai.id>',
+      },
+      template: {
+        dir: join(process.cwd(), 'src/mail/templates'),
+        adapter: new HandlebarsAdapter(),
+        options: { strict: false },
+      },
+    }),
   ],
   controllers: [
     RoleController,
@@ -89,6 +110,7 @@ dotenv.config();
     MessagesService,
     GroupChatGateway,
     BlacklistService,
+    MailService,
   ],
 })
 export class AppModule implements NestModule {

@@ -23,6 +23,7 @@ import { decodeToken } from '@/utils/decode.util';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@/auth/auth.guard';
 import { Request } from 'express';
+import { MailService } from '@/mail/mail.service';
 
 @Controller('user')
 @ApiTags('User')
@@ -30,6 +31,7 @@ export class UserController {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
+    private mailService: MailService,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -67,7 +69,16 @@ export class UserController {
   @Post()
   @ApiBody({ type: CreatUserDto })
   async createUser(@Body() user: CreatUserDto): Promise<User> {
-    return this.userService.createUser(user);
+    const payloadUser = {
+      ...user,
+      status: 'pending',
+      otp_secret: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
+    };
+
+    const confirmUrl = `https://tranduythai.id.vn/verify?email=${payloadUser.email}&otp=${payloadUser.otp_secret}`;
+    await this.mailService.sendWelcomeTemplate(payloadUser.email, payloadUser.username, confirmUrl);
+
+    return this.userService.createUser(payloadUser);
   }
 
   @UseGuards(AuthGuard)

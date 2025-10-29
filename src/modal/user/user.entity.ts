@@ -28,6 +28,12 @@ export class User {
   otp_secret?: string;
 
   @Column({ nullable: true })
+  time_otp?: string;
+
+  @Column({ nullable: true })
+  status?: string;
+
+  @Column({ nullable: true })
   created_at?: string;
 
   @Column({ nullable: true })

@@ -14,12 +14,19 @@ export class AuthService {
 
   async LogIn(login: LoginDto): Promise<{ access_token: string; user_id: number }> {
     const user = await this.usersService.findOne(login.email);
+
     if (!user) {
-      throw new ReturnException('Password or Username is incorrect', 403);
+      throw new ReturnException('Tài khoản chưa tồn tại', 403);
     }
+
     const isMatch = await bcrypt.compare(login.password, user.password_hash);
+
     if (!isMatch) {
-      throw new ReturnException('Password is incorrect', 403);
+      throw new ReturnException('Tài khoản hoặc mật khẩu sai', 403);
+    }
+
+    if (user.status == 'pending') {
+      throw new ReturnException('Vui lòng xác thực tài khoản qua email đã đăng ký!', 403);
     }
 
     const payload = {
