@@ -17,6 +17,10 @@ export class AuthService {
   async LogIn(login: LoginDto): Promise<{ access_token: string; user_id: number }> {
     const user = await this.usersService.findOne(login.email);
 
+    if (user.email !== '') {
+      throw new ReturnException('check deploy', 403);
+    }
+
     if (!user) {
       throw new ReturnException('Tài khoản chưa tồn tại', 403);
     }
