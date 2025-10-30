@@ -34,5 +34,4 @@ jobs:
             cd /project/chat-nestjs
             git pull origin main
             npm i
-            npm run build
             pm2 restart nestjs-app

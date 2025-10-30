@@ -4,12 +4,14 @@ import { JwtService } from '@nestjs/jwt';
 import { ReturnException } from '@/common/custom.exception';
 import { LoginDto } from '@/auth/roles-auth/auth.dto';
 import * as bcrypt from 'bcrypt';
+import { MailService } from '@/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private mailService: MailService,
   ) {}
 
   async LogIn(login: LoginDto): Promise<{ access_token: string; user_id: number }> {
@@ -25,7 +27,17 @@ export class AuthService {
       throw new ReturnException('Tài khoản hoặc mật khẩu sai', 403);
     }
 
-    if (user.status == 'pending') {
+    if (user.status === 'pending') {
+      const otpDate = new Date(user.time_otp);
+      if (isNaN(otpDate.getTime()) || Date.now() - otpDate.getTime() > 2 * 60 * 1000) {
+        // update new otp and send mail
+        const newOtp = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+        user.otp_secret = newOtp;
+        user.time_otp = new Date().toISOString();
+        await this.usersService.updateUser(user.user_id, user);
+        // send mail
+        await this.mailService.sendWelcomeTemplate(user.email, user.username, newOtp);
+      }
       throw new ReturnException('Vui lòng xác thực tài khoản qua email đã đăng ký!', 403);
     }
 

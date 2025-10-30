@@ -73,10 +73,10 @@ export class UserController {
       ...user,
       status: 'pending',
       otp_secret: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
+      time_otp: new Date().toISOString(),
     };
 
-    const confirmUrl = `https://tranduythai.id.vn/verify?email=${payloadUser.email}&otp=${payloadUser.otp_secret}`;
-    await this.mailService.sendWelcomeTemplate(payloadUser.email, payloadUser.username, confirmUrl);
+    await this.mailService.sendWelcomeTemplate(payloadUser.email, payloadUser.username, payloadUser.otp_secret);
 
     return this.userService.createUser(payloadUser);
   }
