@@ -35,4 +35,6 @@ jobs:
             npm i
             pm2 stop all
             pm2 start npm --name "nestjs-thaitd" -- start
+            sudo systemctl restart nginx
+
 
