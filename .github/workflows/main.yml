@@ -33,5 +33,6 @@ jobs:
             git stash
             git pull origin main
             npm i
+            pm2 stop all
             pm2 start npm --name "nestjs-thaitd" -- start
 
