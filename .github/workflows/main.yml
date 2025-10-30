@@ -30,6 +30,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /project/chat-nestjs
+            git stash
             git pull origin main
             npm i
             pm2 restart nestjs-app
