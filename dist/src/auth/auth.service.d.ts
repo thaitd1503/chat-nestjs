@@ -1,6 +1,6 @@
 import { UsersService } from '@/modal/user/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from '@/auth/roles-auth/auth.dto';
+import { LoginDto, VerifyOtpDto } from '@/auth/roles-auth/auth.dto';
 import { MailService } from '@/mail/mail.service';
 export declare class AuthService {
     private readonly usersService;
@@ -11,4 +11,5 @@ export declare class AuthService {
         access_token: string;
         user_id: number;
     }>;
+    VerifyOtp(payload: VerifyOtpDto): Promise<any>;
 }

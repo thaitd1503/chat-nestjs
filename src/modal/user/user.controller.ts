@@ -75,7 +75,12 @@ export class UserController {
       otp_secret: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
       time_otp: new Date().toISOString(),
     };
-
+    // check email exists
+    const existingUser = await this.userService.findOne(payloadUser.email);
+    if (existingUser) {
+      throw new ReturnException('Email already exists', 500);
+    }
+    // send mail welcome and link verify
     await this.mailService.sendWelcomeTemplate(payloadUser.email, payloadUser.username, payloadUser.otp_secret);
 
     return this.userService.createUser(payloadUser);

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '@/modal/user/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ReturnException } from '@/common/custom.exception';
-import { LoginDto } from '@/auth/roles-auth/auth.dto';
+import { LoginDto, VerifyOtpDto } from '@/auth/roles-auth/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { MailService } from '@/mail/mail.service';
 
@@ -50,5 +50,23 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
       user_id: user.user_id,
     };
+  }
+
+  async VerifyOtp(payload:VerifyOtpDto): Promise<any> {
+    const user = await this.usersService.findOne(payload.email);
+    if (!user) {
+      throw new ReturnException('Tài khoản chưa tồn tại', 403);
+    }
+    if (user.otp_secret !== payload.otp) {
+      throw new ReturnException('Mã OTP không tồn tại', 403);
+    }
+
+    if (user.otp_secret == payload.otp) {
+      user.status = 'active';
+      user.otp_secret = null;
+      user.time_otp = null;
+      await this.usersService.updateUser(user.user_id, user);
+      return { message: 'Xác thực tài khoản thành công' };
+    }
   }
 }

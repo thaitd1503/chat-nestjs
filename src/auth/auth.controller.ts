@@ -2,7 +2,7 @@ import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from '@/auth/auth.service';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { BlacklistService } from '@/auth/token.service';
-import { LoginDto } from '@/auth/roles-auth/auth.dto';
+import { LoginDto, VerifyOtpDto } from '@/auth/roles-auth/auth.dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -19,6 +19,15 @@ export class AuthController {
   })
   signIn(@Body() login: LoginDto) {
     return this.authService.LogIn(login);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('verify')
+  @ApiBody({
+    type: VerifyOtpDto,
+  })
+  verify(@Body() verify: VerifyOtpDto) {
+    return this.authService.VerifyOtp(verify);
   }
 
   // @UseGuards(AuthGuard)

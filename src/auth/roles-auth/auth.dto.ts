@@ -7,3 +7,11 @@ export class LoginDto {
   @ApiProperty({ default: 'Thai2003@' })
   password: string;
 }
+
+export class VerifyOtpDto {
+  @ApiProperty({ default: '' })
+  email: string;
+
+  @ApiProperty({ default: '' })
+  otp: string;
+}
