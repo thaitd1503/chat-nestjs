@@ -78,8 +78,8 @@ dotenv.config();
         port: 587,
         secure: false,
         auth: {
-          user: `thaitd1503.work@gmail.com`,
-          pass: `ditm fzdc jcxp zpts`,
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASSWORD,
         },
       },
       defaults: {
