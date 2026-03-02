@@ -66,7 +66,7 @@ dotenv.config();
     ]),
     JwtModule.register({
       secret: process.env.secret_key, // Replace with your secret key
-      signOptions: { expiresIn: '12h' }, // Configure token expiration
+      signOptions: { expiresIn: '30d' }, // Configure token expiration
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public/uploads'),
