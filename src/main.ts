@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 declare const module: any;
 import * as dotenv from 'dotenv';
 import { AuthenticatedSocketIoAdapter } from '../middleware';
+import * as bodyParser from 'body-parser';
 // import { Middleware } from '../middleware';
 
 async function bootstrap() {
@@ -23,6 +24,10 @@ async function bootstrap() {
   app.useWebSocketAdapter(new AuthenticatedSocketIoAdapter(app));
 
   app.enableCors();
+
+
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   await app.listen(9999);
 
