@@ -96,5 +96,6 @@ export class FilesController {
     });
 
     createReadStream(filePath).pipe(res);
+    console.log(123);
   }
 }
